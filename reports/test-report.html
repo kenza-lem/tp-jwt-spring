@@ -1,0 +1,55 @@
+<!doctype html><html lang="fr"><meta charset="utf-8"><title>TP JWT — Rapport de tests exécutés</title><style>
+*{box-sizing:border-box}body{margin:0;background:#edf1f5;color:#183044;font:16px/1.5 Arial,sans-serif}main{max-width:1240px;margin:auto;padding:36px}section{background:white;padding:32px;margin-bottom:28px;border-radius:16px}.eyebrow{color:#277464;font-weight:bold;letter-spacing:1px;font-size:12px}h1{font-size:32px;margin:10px 0}h2{font-size:26px;margin:8px 0 20px}p{color:#486174}.stats{display:flex;gap:16px;margin:24px 0}.stat{flex:1;background:#eaf6f1;padding:20px;border-radius:10px}.stat b{font-size:34px;display:block;color:#146047}small{color:#546b7a}table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:9px 10px;text-align:left;border-bottom:1px solid #e2e9ee}th{background:#edf2f5}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}article{padding:18px;border:1px solid #d5e3e7;border-radius:12px;min-width:0}article h3{font-size:17px}.req{font-size:12px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}.req strong{margin-left:auto;color:#146047}.method{font-weight:bold;color:#146047}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f3f6f8;padding:12px;min-height:74px;font-size:12px}li{font-size:12px;color:#146047}ul{padding-left:16px}.note{border-left:3px solid #43a88e;padding-left:14px;font-size:14px}footer{padding:12px;color:#546b7a}#controles .grid{grid-template-columns:repeat(3,1fr)}#controles article{padding:12px}#controles pre{min-height:0;font-size:10px}#controles h3{font-size:14px;margin:8px 0}#controles li{font-size:11px}
+</style><main><section id="bilan"><div class="eyebrow">TP JWT · PREUVES D’EXÉCUTION</div><h1>Authentification et accès protégé</h1><p>Rapport produit depuis les tests Java et l’exécution réelle de la collection Postman avec Newman 6.2.3.</p><small>Exécution Newman : 2026-10-15T17:08:26.679Z · serveur local de test · OpenJDK 25 / Spring Boot 4.1.1</small><div class="stats"><div class="stat"><b>8</b>tests Java réussis</div><div class="stat"><b>12</b>requêtes API exécutées</div><div class="stat"><b>17</b>assertions Newman réussies</div><div class="stat"><b>0</b>échec final</div></div><table><thead><tr><th>Scénario</th><th>Requête</th><th>HTTP</th><th>Assertion</th></tr></thead><tbody><tr><td>Inscription</td><td>POST /auth/register</td><td>200</td><td>✓ Vérifié</td></tr><tr><td>Email déjà inscrit</td><td>POST /auth/register</td><td>409</td><td>✓ Vérifié</td></tr><tr><td>Données manquantes</td><td>POST /auth/register</td><td>400</td><td>✓ Vérifié</td></tr><tr><td>Email mal formé</td><td>POST /auth/register</td><td>400</td><td>✓ Vérifié</td></tr><tr><td>Mot de passe vide</td><td>POST /auth/register</td><td>400</td><td>✓ Vérifié</td></tr><tr><td>Connexion</td><td>POST /auth/login</td><td>200</td><td>✓ Vérifié</td></tr><tr><td>Mauvais mot de passe</td><td>POST /auth/login</td><td>401</td><td>✓ Vérifié</td></tr><tr><td>Utilisateur inconnu</td><td>POST /auth/login</td><td>401</td><td>✓ Vérifié</td></tr><tr><td>Connexion incomplète</td><td>POST /auth/login</td><td>400</td><td>✓ Vérifié</td></tr><tr><td>Profil avec JWT</td><td>GET /api/profile</td><td>200</td><td>✓ Vérifié</td></tr><tr><td>Profil sans JWT</td><td>GET /api/profile</td><td>401</td><td>✓ Vérifié</td></tr><tr><td>Profil avec JWT invalide</td><td>GET /api/profile</td><td>401</td><td>✓ Vérifié</td></tr></tbody></table><p class="note">Les réponses 400, 401 et 409 sont attendues et vérifiées. La première tentative séparée a rencontré des délais réseau ; l’exécution présentée a été relancée avec le serveur et Newman dans le même environnement.</p><small>Source : reports/java-summary.json et reports/newman-summary.json. JWT et mots de passe temporaires exclus des exports.</small></section><section id="parcours"><div class="eyebrow">COLLECTION POSTMAN EXÉCUTÉE AVEC NEWMAN</div><h2>Inscription → Connexion → Profil</h2><div class="grid"><article><div class="req"><span class="method">POST</span> <code>/auth/register</code><strong>HTTP 200</strong></div><h3>Inscription</h3><pre>Successfully registered</pre><ul><li>✓ HTTP 200</li><li>✓ Message de confirmation</li></ul></article><article><div class="req"><span class="method">POST</span> <code>/auth/login</code><strong>HTTP 200</strong></div><h3>Connexion</h3><pre>{
+  &quot;token&quot;: &quot;[JWT MASQUÉ]&quot;
+}</pre><ul><li>✓ HTTP 200</li><li>✓ JWT signé reçu</li></ul></article><article><div class="req"><span class="method">GET</span> <code>/api/profile</code><strong>HTTP 200</strong></div><h3>Profil avec JWT</h3><pre>{
+  &quot;roles&quot;: [
+    &quot;ROLE_USER&quot;
+  ],
+  &quot;email&quot;: &quot;tp-ba4e3fae-b663-4aee-9845-bfa4c83baeaf@example.com&quot;
+}</pre><ul><li>✓ HTTP 200</li><li>✓ Email de l’utilisateur connecté</li><li>✓ Rôle USER</li><li>✓ Aucun mot de passe exposé</li></ul></article></div><p class="note">Réponses réellement reçues par Newman. La valeur du JWT a été masquée avant l’export ; les champs des requêtes contenant un mot de passe ne sont pas enregistrés dans ce rapport.</p></section><section id="controles"><div class="eyebrow">CAS NÉGATIFS VÉRIFIÉS</div><h2>Validation et accès non autorisés</h2><div class="grid"><article><div class="req"><span class="method">POST</span> <code>/auth/register</code><strong>HTTP 409</strong></div><h3>Email déjà inscrit</h3><pre>{
+  &quot;timestamp&quot;: &quot;2026-10-15T17:08:25.153Z&quot;,
+  &quot;status&quot;: 409,
+  &quot;error&quot;: &quot;Conflict&quot;,
+  &quot;path&quot;: &quot;/auth/register&quot;
+}</pre><ul><li>✓ HTTP 409</li></ul></article><article><div class="req"><span class="method">POST</span> <code>/auth/register</code><strong>HTTP 400</strong></div><h3>Données manquantes</h3><pre>{
+  &quot;timestamp&quot;: &quot;2026-10-15T17:08:25.218Z&quot;,
+  &quot;status&quot;: 400,
+  &quot;error&quot;: &quot;Bad Request&quot;,
+  &quot;path&quot;: &quot;/auth/register&quot;
+}</pre><ul><li>✓ HTTP 400</li></ul></article><article><div class="req"><span class="method">POST</span> <code>/auth/register</code><strong>HTTP 400</strong></div><h3>Email mal formé</h3><pre>{
+  &quot;timestamp&quot;: &quot;2026-10-15T17:08:25.313Z&quot;,
+  &quot;status&quot;: 400,
+  &quot;error&quot;: &quot;Bad Request&quot;,
+  &quot;path&quot;: &quot;/auth/register&quot;
+}</pre><ul><li>✓ HTTP 400</li></ul></article><article><div class="req"><span class="method">POST</span> <code>/auth/register</code><strong>HTTP 400</strong></div><h3>Mot de passe vide</h3><pre>{
+  &quot;timestamp&quot;: &quot;2026-10-15T17:08:25.407Z&quot;,
+  &quot;status&quot;: 400,
+  &quot;error&quot;: &quot;Bad Request&quot;,
+  &quot;path&quot;: &quot;/auth/register&quot;
+}</pre><ul><li>✓ HTTP 400</li></ul></article><article><div class="req"><span class="method">POST</span> <code>/auth/login</code><strong>HTTP 401</strong></div><h3>Mauvais mot de passe</h3><pre>{
+  &quot;timestamp&quot;: &quot;2026-10-15T17:08:26.019Z&quot;,
+  &quot;status&quot;: 401,
+  &quot;error&quot;: &quot;Unauthorized&quot;,
+  &quot;path&quot;: &quot;/auth/login&quot;
+}</pre><ul><li>✓ HTTP 401</li></ul></article><article><div class="req"><span class="method">POST</span> <code>/auth/login</code><strong>HTTP 401</strong></div><h3>Utilisateur inconnu</h3><pre>{
+  &quot;timestamp&quot;: &quot;2026-10-15T17:08:26.230Z&quot;,
+  &quot;status&quot;: 401,
+  &quot;error&quot;: &quot;Unauthorized&quot;,
+  &quot;path&quot;: &quot;/auth/login&quot;
+}</pre><ul><li>✓ HTTP 401</li></ul></article><article><div class="req"><span class="method">POST</span> <code>/auth/login</code><strong>HTTP 400</strong></div><h3>Connexion incomplète</h3><pre>{
+  &quot;timestamp&quot;: &quot;2026-10-15T17:08:26.314Z&quot;,
+  &quot;status&quot;: 400,
+  &quot;error&quot;: &quot;Bad Request&quot;,
+  &quot;path&quot;: &quot;/auth/login&quot;
+}</pre><ul><li>✓ HTTP 400</li></ul></article><article><div class="req"><span class="method">GET</span> <code>/api/profile</code><strong>HTTP 401</strong></div><h3>Profil sans JWT</h3><pre>{
+  &quot;timestamp&quot;: &quot;2026-10-15T17:08:26.545Z&quot;,
+  &quot;status&quot;: 401,
+  &quot;error&quot;: &quot;Unauthorized&quot;,
+  &quot;path&quot;: &quot;/api/profile&quot;
+}</pre><ul><li>✓ HTTP 401</li></ul></article><article><div class="req"><span class="method">GET</span> <code>/api/profile</code><strong>HTTP 401</strong></div><h3>Profil avec JWT invalide</h3><pre>{
+  &quot;timestamp&quot;: &quot;2026-10-15T17:08:26.629Z&quot;,
+  &quot;status&quot;: 401,
+  &quot;error&quot;: &quot;Unauthorized&quot;,
+  &quot;path&quot;: &quot;/api/profile&quot;
+}</pre><ul><li>✓ HTTP 401</li></ul></article></div><p class="note">Les JWT expirés ou falsifiés et le rôle insuffisant sont également contrôlés par les tests Java. Ce rapport n’est pas une capture de l’interface Postman.</p></section><footer>Captures du rapport réel — aucune interface utilisateur de l’API n’est simulée.</footer></main></html>

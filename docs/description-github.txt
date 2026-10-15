@@ -1,0 +1,1 @@
+API REST d’authentification JWT avec Spring Boot, Spring Security et H2 : inscription, connexion, accès protégé et tests automatisés Java et Postman.
