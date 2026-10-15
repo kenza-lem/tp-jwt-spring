@@ -1,0 +1,232 @@
+{
+  "runner": "Newman",
+  "version": "6.2.3",
+  "date": "2026-10-15T17:08:26.679Z",
+  "baseUrl": "http://127.0.0.1:18081",
+  "stats": {
+    "iterations": {
+      "total": 1,
+      "pending": 0,
+      "failed": 0
+    },
+    "items": {
+      "total": 12,
+      "pending": 0,
+      "failed": 0
+    },
+    "scripts": {
+      "total": 24,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequests": {
+      "total": 12,
+      "pending": 0,
+      "failed": 0
+    },
+    "requests": {
+      "total": 12,
+      "pending": 0,
+      "failed": 0
+    },
+    "tests": {
+      "total": 12,
+      "pending": 0,
+      "failed": 0
+    },
+    "assertions": {
+      "total": 17,
+      "pending": 0,
+      "failed": 0
+    },
+    "testScripts": {
+      "total": 12,
+      "pending": 0,
+      "failed": 0
+    },
+    "prerequestScripts": {
+      "total": 12,
+      "pending": 0,
+      "failed": 0
+    }
+  },
+  "failures": 0,
+  "executions": [
+    {
+      "name": "Inscription",
+      "method": "POST",
+      "path": "/auth/register",
+      "status": 200,
+      "response": "Successfully registered",
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Message de confirmation",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "Email déjà inscrit",
+      "method": "POST",
+      "path": "/auth/register",
+      "status": 409,
+      "response": "{\n  \"timestamp\": \"2026-10-15T17:08:25.153Z\",\n  \"status\": 409,\n  \"error\": \"Conflict\",\n  \"path\": \"/auth/register\"\n}",
+      "assertions": [
+        {
+          "name": "HTTP 409",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "Données manquantes",
+      "method": "POST",
+      "path": "/auth/register",
+      "status": 400,
+      "response": "{\n  \"timestamp\": \"2026-10-15T17:08:25.218Z\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"path\": \"/auth/register\"\n}",
+      "assertions": [
+        {
+          "name": "HTTP 400",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "Email mal formé",
+      "method": "POST",
+      "path": "/auth/register",
+      "status": 400,
+      "response": "{\n  \"timestamp\": \"2026-10-15T17:08:25.313Z\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"path\": \"/auth/register\"\n}",
+      "assertions": [
+        {
+          "name": "HTTP 400",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "Mot de passe vide",
+      "method": "POST",
+      "path": "/auth/register",
+      "status": 400,
+      "response": "{\n  \"timestamp\": \"2026-10-15T17:08:25.407Z\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"path\": \"/auth/register\"\n}",
+      "assertions": [
+        {
+          "name": "HTTP 400",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "Connexion",
+      "method": "POST",
+      "path": "/auth/login",
+      "status": 200,
+      "response": "{\n  \"token\": \"[JWT MASQUÉ]\"\n}",
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "JWT signé reçu",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "Mauvais mot de passe",
+      "method": "POST",
+      "path": "/auth/login",
+      "status": 401,
+      "response": "{\n  \"timestamp\": \"2026-10-15T17:08:26.019Z\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"path\": \"/auth/login\"\n}",
+      "assertions": [
+        {
+          "name": "HTTP 401",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "Utilisateur inconnu",
+      "method": "POST",
+      "path": "/auth/login",
+      "status": 401,
+      "response": "{\n  \"timestamp\": \"2026-10-15T17:08:26.230Z\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"path\": \"/auth/login\"\n}",
+      "assertions": [
+        {
+          "name": "HTTP 401",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "Connexion incomplète",
+      "method": "POST",
+      "path": "/auth/login",
+      "status": 400,
+      "response": "{\n  \"timestamp\": \"2026-10-15T17:08:26.314Z\",\n  \"status\": 400,\n  \"error\": \"Bad Request\",\n  \"path\": \"/auth/login\"\n}",
+      "assertions": [
+        {
+          "name": "HTTP 400",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "Profil avec JWT",
+      "method": "GET",
+      "path": "/api/profile",
+      "status": 200,
+      "response": "{\n  \"roles\": [\n    \"ROLE_USER\"\n  ],\n  \"email\": \"tp-ba4e3fae-b663-4aee-9845-bfa4c83baeaf@example.com\"\n}",
+      "assertions": [
+        {
+          "name": "HTTP 200",
+          "passed": true
+        },
+        {
+          "name": "Email de l’utilisateur connecté",
+          "passed": true
+        },
+        {
+          "name": "Rôle USER",
+          "passed": true
+        },
+        {
+          "name": "Aucun mot de passe exposé",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "Profil sans JWT",
+      "method": "GET",
+      "path": "/api/profile",
+      "status": 401,
+      "response": "{\n  \"timestamp\": \"2026-10-15T17:08:26.545Z\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"path\": \"/api/profile\"\n}",
+      "assertions": [
+        {
+          "name": "HTTP 401",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "Profil avec JWT invalide",
+      "method": "GET",
+      "path": "/api/profile",
+      "status": 401,
+      "response": "{\n  \"timestamp\": \"2026-10-15T17:08:26.629Z\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"path\": \"/api/profile\"\n}",
+      "assertions": [
+        {
+          "name": "HTTP 401",
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

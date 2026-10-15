@@ -42,16 +42,16 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
         validateCredentials(request.email(), request.password());
-        if (userRepository.findByEmail(request.email()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Cet email est deja utilise");
+        if (userRepository.existsByEmail(request.email())) {
+            return ResponseEntity.badRequest().body("Email deja utilise");
         }
         AppUser user = new AppUser(null, passwordEncoder.encode(request.password()), request.email(), "USER");
         try {
             userRepository.saveAndFlush(user);
         } catch (DataIntegrityViolationException exception) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Cet email est deja utilise");
+            return ResponseEntity.badRequest().body("Email deja utilise");
         }
-        return ResponseEntity.ok("Successfully registered");
+        return ResponseEntity.ok("Utilisateur cree");
     }
 
     @PostMapping("/login")

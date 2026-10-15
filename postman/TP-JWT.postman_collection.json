@@ -72,7 +72,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
-                  "pm.test(\"Message de confirmation\", function () { pm.expect(pm.response.text()).to.eql(\"Successfully registered\"); });"
+                  "pm.test(\"Message de confirmation\", function () { pm.expect(pm.response.text()).to.eql(\"Utilisateur cree\"); });"
                 ]
               }
             }
@@ -108,7 +108,8 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"HTTP 409\", function () { pm.response.to.have.status(409); });"
+                  "pm.test(\"HTTP 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Message de doublon\", function () { pm.expect(pm.response.text()).to.eql(\"Email deja utilise\"); });"
                 ]
               }
             }
@@ -401,9 +402,8 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
-                  "pm.test(\"Email de l’utilisateur connecté\", function () { pm.expect(pm.response.json().email).to.eql(pm.collectionVariables.get(\"testEmail\")); });",
-                  "pm.test(\"Rôle USER\", function () { pm.expect(pm.response.json().roles).to.include(\"ROLE_USER\"); });",
-                  "pm.test(\"Aucun mot de passe exposé\", function () { pm.expect(pm.response.json()).not.to.have.property(\"password\"); });"
+                  "pm.test(\"Profil de l’utilisateur connecté\", function () { pm.expect(pm.response.text()).to.eql(\"Utilisateur connecte : \" + pm.collectionVariables.get(\"testEmail\")); });",
+                  "pm.test(\"Mot de passe absent de la réponse\", function () { pm.expect(pm.response.text()).not.to.include(pm.collectionVariables.get(\"testPassword\")); });"
                 ]
               }
             }
@@ -455,6 +455,58 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"HTTP 401\", function () { pm.response.to.have.status(401); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Hello sans JWT",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/hello",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 401\", function () { pm.response.to.have.status(401); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Hello avec JWT",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/hello",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Message hello\", function () { pm.expect(pm.response.text()).to.eql(\"Bienvenue dans l’API securisee\".replace(\"’\", \"\\u0027\")); });"
                 ]
               }
             }

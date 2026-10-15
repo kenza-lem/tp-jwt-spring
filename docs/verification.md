@@ -1,39 +1,24 @@
-# Vérifications exécutées le 15 octobre 2026
+# Vérifications de la version alignée sur le PDF
 
-## Environnement et périmètre
+Exécution réelle du 15 octobre 2026, Windows et OpenJDK 25.
 
-Windows, OpenJDK 25, code Java niveau 17, Spring Boot 4.1.1,
-Maven Wrapper 3.10.0 et Newman 6.2.3.
-
-## Résultats
-
-| Vérification | Résultat constaté |
+| Contrôle | Résultat |
 |---|---|
-| Maven verify | BUILD SUCCESS, JAR exécutable produit |
-| Tests JUnit | 8 exécutés, 0 échec, 0 erreur |
-| Démarrage du JAR avec `.env` local | Serveur démarré sur un port de test |
-| Installation depuis une copie propre | Configuration locale générée, 8 tests réussis, JAR produit |
-| Collection Newman v2.1 | 12 requêtes exécutées, 17 assertions, 0 échec |
+| Maven verify | BUILD SUCCESS, JAR créé |
+| Tests Java | 9 tests exécutés, 0 échec, 0 erreur |
+| Collection Postman exécutée avec Newman 6.2.3 | 14 requêtes, 20 assertions, 0 échec |
 
-Les données de compte de la collection sont générées pour chaque exécution.
-Les tests Java utilisent une clé HMAC temporaire en mémoire. Les rapports
-publics ne contiennent ni cette clé, ni la clé locale, ni les JWT reçus,
-ni les mots de passe temporaires.
+Les tests couvrent les réponses du support : inscription 200 « Utilisateur cree »,
+doublon 400 « Email deja utilise », connexion avec JWT, hello et profil texte,
+accès sans token, mauvaise signature, expiration et utilisateur inconnu.
+Les routes /api/** demandent une authentification et non un rôle spécifique.
 
-La première tentative Newman sur un serveur lancé séparément a échoué par
-timeouts de connexion (29 erreurs de requête/assertion). Aucun résultat de cette
-tentative n’est présenté comme un succès. Le serveur et Newman ont ensuite été
-lancés ensemble dans le même environnement local : les 12 requêtes et les
-17 assertions ont réussi. Aucun changement du code API n’a été nécessaire
-pour corriger cet échec de communication.
+Sources nettoyées : reports/java-summary.json et reports/newman-summary.json.
+Le serveur du JAR a été lancé avec Newman dans le même environnement local,
+sur le port 18081. Il a été arrêté après les tests. Aucun secret ou JWT réel
+n’est présent dans les rapports exportés.
 
-## Sources des preuves
-
-- `reports/java-summary.json` : extrait nettoyé des rapports Surefire JUnit.
-- `reports/newman-summary.json` : réponses et assertions réelles, JWT masqué.
-- `reports/test-report.html` : présentation de ces données.
-- `screenshots/*.png` : captures de ce rapport rendu dans Chromium.
-
-Le backend ne possède pas d’interface graphique. Les captures présentent les
-résultats API ; aucune capture de Postman n’est fabriquée. La collection a été
-exécutée avec Newman, pas dans l’application Postman.
+Les captures personnelles de l’utilisateur dans Postman ne sont pas encore réalisées.
+Le guide docs/guide-postman.md décrit les manipulations et les captures à produire.
+Les anciennes captures et preuves (version précédente) sont archivées sous
+docs/archives/avant-partie2/ ; elles ne sont pas présentées comme preuve de cette version.

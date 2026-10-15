@@ -17,9 +17,9 @@ interface graphique utilisateur n’est incluse.
 - Mots de passe hachés avec BCrypt, jamais renvoyés dans les réponses.
 - Connexion par e-mail et mot de passe ; retour d’un JWT signé.
 - Vérification de la signature, de l’expiration et de l’utilisateur du JWT.
-- Profil accessible avec un JWT valide et le rôle `USER`.
-- Erreurs HTTP : saisie invalide `400`, accès non authentifié `401`, rôle insuffisant
-  `403`, inscription en double `409`.
+- Hello et profil accessibles avec un JWT valide, sans rôle particulier imposé.
+- Erreurs HTTP : saisie invalide `400`, accès non authentifié `401` et
+  inscription en double `400`, conformément au PDF.
 - Base H2 en mémoire et console activable pour le développement local.
 - Tests d’intégration Java et collection Postman v2.1 exécutable avec Newman.
 
@@ -142,7 +142,7 @@ leur propre clé en mémoire et ne nécessitent pas de secret dans le dépôt.
 5. Vérifier que le répertoire de travail de cette configuration est le dossier de `pom.xml`.
 
 L’application écoute sur `http://localhost:8080`. La racine `/` n’est pas une page
-d’accueil et peut renvoyer 401 : utiliser les routes documentées ci-dessous.
+d’accueil et peut renvoyer 404 : utiliser les routes documentées ci-dessous.
 Arrêter le serveur avec `Ctrl+C` dans le terminal ou le bouton Stop d’IntelliJ.
 
 ## API
@@ -151,9 +151,10 @@ Préfixe local : `http://localhost:8080`.
 
 | Méthode | Route | Authentification | Réponse attendue |
 |---|---|---|---|
-| POST | `/auth/register` | Aucune | 200 et `Successfully registered` |
+| POST | `/auth/register` | Aucune | 200 et `Utilisateur cree` |
 | POST | `/auth/login` | Aucune | 200 et un objet contenant `token` |
-| GET | `/api/profile` | Bearer JWT, rôle USER | 200 avec `email` et `roles` |
+| GET | `/api/hello` | Bearer JWT | 200, message de bienvenue |
+| GET | `/api/profile` | Bearer JWT | 200, texte avec l’e-mail connecté |
 
 Les corps JSON d’inscription et de connexion comportent `email` et `password`.
 Utiliser ses propres données locales de test ; la collection génère ces valeurs
@@ -193,7 +194,7 @@ java -jar target/tp-jwt-spring-0.0.1-SNAPSHOT.jar
 Ces commandes sont à lancer depuis la racine, après génération de `.env` pour le
 lancement du JAR. Les tests couvrent la persistance, le hachage, le parcours HTTP,
 les données manquantes, l’e-mail invalide, les doublons, les mauvais identifiants,
-les JWT absents/falsifiés/expirés, un utilisateur inconnu et le rôle insuffisant.
+les JWT absents/falsifiés/expirés, un utilisateur inconnu et l’accès d’un utilisateur authentifié sans restriction de rôle.
 
 ## Collection Postman et exécution Newman
 
@@ -217,25 +218,15 @@ Les mots de passe temporaires et JWT ne doivent pas être exportés dans un rapp
 Newman brut public. Le rapport publié ici ne garde que les résultats utiles,
 avec la valeur du JWT masquée.
 
-## Vérifications exécutées et captures
+## Deuxième partie et captures personnelles
 
-Les résultats constatés sont consignés dans [docs/verification.md](docs/verification.md)
-et les fichiers JSON nettoyés du dossier `reports/`. Les images ci-dessous sont des
-captures du rapport HTML généré à partir de ces exécutions réelles. Ce sont des
-résultats **Newman**, et non des captures de l’application Postman. Aucun résultat
-issu de la vidéo du professeur n’est réutilisé comme preuve.
+Les contrats HTTP sont alignés sur [la deuxième partie du PDF](docs/partie2-pdf.md).
+Les résultats actuels figurent dans [docs/verification.md](docs/verification.md).
+Les anciens rapports et captures sont archivés dans `docs/archives/avant-partie2/`.
 
-### Résultat global
-
-![Bilan réel des tests Java et Newman](screenshots/01-bilan-tests.png)
-
-### Parcours d’inscription, connexion et profil
-
-![Requêtes exécutées et réponses, token masqué](screenshots/02-parcours-api.png)
-
-### Rejets attendus
-
-![Erreurs de validation et accès non autorisés vérifiés](screenshots/03-controles-acces.png)
+Pour réaliser ses propres requêtes et captures dans Postman, suivre
+[le guide pas à pas](docs/guide-postman.md). Les captures personnelles ne sont
+pas encore réalisées ; aucune image de résultats n’est fabriquée pour les remplacer.
 
 ## Limites et améliorations possibles
 

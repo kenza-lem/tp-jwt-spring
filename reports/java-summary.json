@@ -1,34 +1,19 @@
 {
-  "runner": "Maven / JUnit",
-  "date": "2026-10-15",
-  "tests": 8,
+  "version": "partie2-pdf",
+  "tests": 9,
   "failures": 0,
   "classes": [
     {
       "name": "ma.enset.tpjwtspring.JwtAuthenticationTests",
-      "tests": 5,
+      "tests": 6,
       "failures": 0,
-      "errors": 0,
-      "skipped": 0,
-      "cases": [
-        "validTokenWithInsufficientRoleGetsForbidden",
-        "invalidExpiredAndForgedTokensAreRejected",
-        "incompleteCredentialsReturnBadRequest",
-        "tokenForUnknownUserAndWrongSubjectAreRejected",
-        "registerLoginAndProtectedProfileWorkWithoutSession"
-      ]
+      "errors": 0
     },
     {
       "name": "ma.enset.tpjwtspring.TpJwtSpringApplicationTests",
       "tests": 3,
       "failures": 0,
-      "errors": 0,
-      "skipped": 0,
-      "cases": [
-        "unknownEmailIsRejected",
-        "savedUserCanBeLoadedByEmailWithItsRole",
-        "contextLoads"
-      ]
+      "errors": 0
     }
   ]
 }

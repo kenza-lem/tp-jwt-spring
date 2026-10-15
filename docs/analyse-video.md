@@ -1,4 +1,8 @@
-# Analyse de l’enregistrement du 15 octobre 2026
+# Analyse historique de l’enregistrement du 15 octobre 2026
+
+Cette comparaison précède la réception du PDF. Les contrats actuels sont décrits
+dans `docs/partie2-pdf.md` ; notamment, le doublon renvoie désormais 400 et
+le profil demande une authentification sans restriction de rôle.
 
 Durée du fichier fourni : 1 h 42 min 08 s environ. Analyse visuelle des écrans
 de code, diapositives et démonstrations ; aucune transcription audio n’a été produite.

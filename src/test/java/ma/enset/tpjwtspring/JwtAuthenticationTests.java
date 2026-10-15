@@ -77,10 +77,12 @@ class JwtAuthenticationTests extends SecurityTestSupport {
         var profile = request("GET", "/api/profile", null, token);
         assertEquals(200, profile.statusCode(), profile.body());
         assertTrue(profile.body().contains(email));
-        assertTrue(profile.body().contains("ROLE_USER"));
+        assertEquals("Utilisateur connecte : " + email, profile.body());
         assertTrue(profile.headers().allValues("Set-Cookie").stream()
                 .noneMatch(cookie -> cookie.contains("JSESSIONID")));
-        assertEquals(409, request("POST", "/auth/register", body, null).statusCode());
+        var duplicate = request("POST", "/auth/register", body, null);
+        assertEquals(400, duplicate.statusCode());
+        assertEquals("Email deja utilise", duplicate.body());
         assertEquals(401, request("POST", "/auth/login",
                 "{\"email\":\"" + email + "\",\"password\":\"wrong\"}", null).statusCode());
         assertEquals(401, request("GET", "/api/profile", null, null).statusCode());
@@ -104,11 +106,11 @@ class JwtAuthenticationTests extends SecurityTestSupport {
     }
 
     @Test
-    void validTokenWithInsufficientRoleGetsForbidden() throws Exception {
+    void anyAuthenticatedRoleCanAccessProfileAsInCourse() throws Exception {
         String email = "guest@example.com";
         userRepository.saveAndFlush(new AppUser(null, passwordEncoder.encode("123456"), email, "GUEST"));
         String token = jwtService.generateToken(User.withUsername(email).password("unused").roles("GUEST").build());
-        assertEquals(403, request("GET", "/api/profile", null, token).statusCode());
+        assertEquals(200, request("GET", "/api/profile", null, token).statusCode());
     }
 
     @Test
@@ -118,6 +120,17 @@ class JwtAuthenticationTests extends SecurityTestSupport {
         assertEquals(401, request("GET", "/api/profile", null, token).statusCode());
         var other = User.withUsername("other@example.com").password("unused").roles("USER").build();
         assertFalse(jwtService.isTokenValid(token, other));
+    }
+
+    @Test
+    void helloRequiresAuthenticationAndReturnsCourseMessage() throws Exception {
+        String email = "hello@example.com";
+        userRepository.saveAndFlush(new AppUser(null, passwordEncoder.encode("123456"), email, "USER"));
+        var user = User.withUsername(email).password("unused").roles("USER").build();
+        assertEquals(401, request("GET", "/api/hello", null, null).statusCode());
+        var response = request("GET", "/api/hello", null, jwtService.generateToken(user));
+        assertEquals(200, response.statusCode());
+        assertEquals("Bienvenue dans l'API securisee", response.body());
     }
 
     @Test
