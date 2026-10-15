@@ -224,9 +224,14 @@ Les contrats HTTP sont alignés sur [la deuxième partie du PDF](docs/partie2-pd
 Les résultats actuels figurent dans [docs/verification.md](docs/verification.md).
 Les anciens rapports et captures sont archivés dans `docs/archives/avant-partie2/`.
 
-Pour réaliser ses propres requêtes et captures dans Postman, suivre
-[le guide pas à pas](docs/guide-postman.md). Les captures personnelles ne sont
-pas encore réalisées ; aucune image de résultats n’est fabriquée pour les remplacer.
+Les tests ont également été réalisés dans l’application Postman : **20 tests
+réussis, 0 échec et 0 erreur** dans le Collection Runner. Les cinq captures
+personnelles retenues et les explications de chaque étape sont présentées dans
+[le compte rendu Postman](docs/tests-postman.md).
+
+![Bilan Postman : 20 tests réussis](screenshots/06-runner.png)
+
+Pour reproduire le parcours, suivre [le guide pas à pas](docs/guide-postman.md).
 
 ## Limites et améliorations possibles
 

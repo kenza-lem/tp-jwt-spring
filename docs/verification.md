@@ -18,7 +18,8 @@ Le serveur du JAR a été lancé avec Newman dans le même environnement local,
 sur le port 18081. Il a été arrêté après les tests. Aucun secret ou JWT réel
 n’est présent dans les rapports exportés.
 
-Les captures personnelles de l’utilisateur dans Postman ne sont pas encore réalisées.
-Le guide docs/guide-postman.md décrit les manipulations et les captures à produire.
+Les captures personnelles Postman sont désormais intégrées. Le compte rendu
+docs/tests-postman.md présente les résultats manuels et le bilan du Runner :
+20 tests réussis, 0 échec, 0 erreur. Les valeurs des tokens ne sont pas publiées.
 Les anciennes captures et preuves (version précédente) sont archivées sous
 docs/archives/avant-partie2/ ; elles ne sont pas présentées comme preuve de cette version.
